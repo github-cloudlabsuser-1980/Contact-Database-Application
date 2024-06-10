@@ -2,53 +2,38 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "serverName": {
+    "appServicePlanName": {
       "type": "string"
     },
-    "databaseName": {
-      "type": "string"
+    "appServicePlanSku": {
+      "type": "string",
+      "defaultValue": "F1"
     },
-    "appServiceName": {
+    "webAppName": {
       "type": "string"
-    },
-    "administratorLogin": {
-      "type": "string"
-    },
-    "administratorLoginPassword": {
-      "type": "securestring"
     }
   },
   "resources": [
     {
-      "type": "Microsoft.Sql/servers",
-      "apiVersion": "2020-08-01-preview",
-      "name": "[parameters('serverName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2016-09-01",
+      "name": "[parameters('appServicePlanName')]",
       "location": "[resourceGroup().location]",
-      "resources": [
-        {
-          "type": "databases",
-          "apiVersion": "2020-08-01-preview",
-          "name": "[parameters('databaseName')]",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
-          ],
-          "properties": {
-            "collation": "SQL_Latin1_General_CP1_CI_AS",
-            "edition": "Basic",
-            "maxSizeBytes": "1073741824",
-            "requestedServiceObjectiveName": "Basic"
-          }
-        }
-      ]
+      "sku": {
+        "name": "[parameters('appServicePlanSku')]",
+        "capacity": 1
+      }
     },
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2016-08-01",
-      "name": "[parameters('appServiceName')]",
+      "name": "[parameters('webAppName')]",
       "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+      ],
       "properties": {
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServiceName'))]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
         "siteConfig": {
           "appSettings": [
             {
@@ -61,4 +46,3 @@
     }
   ]
 }
-v

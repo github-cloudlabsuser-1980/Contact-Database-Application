@@ -2,20 +2,14 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "serverName": {
-      "value": "Contact Database application"
+    "appServicePlanName": {
+      "value": "your-app-service-plan-name"
     },
-    "databaseName": {
-      "value": "CDA-Database"
+    "appServicePlanSku": {
+      "value": "F1"
     },
-    "appServiceName": {
-      "value": "Contact Database application"
-    },
-    "administratorLogin": {
-      "value": "odl_user_1368018@azurehol1315.onmicrosoft.com"
-    },
-    "administratorLoginPassword": {
-      "value": "ypgg28TFQ*K7"
+    "webAppName": {
+      "value": "your-web-app-name"
     }
   }
 }
