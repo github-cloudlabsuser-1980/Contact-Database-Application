@@ -1,34 +1,45 @@
-﻿{
+{
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "appServicePlanName": {
-      "type": "string"
-    },
-    "appServicePlanSku": {
+    "appName": {
       "type": "string",
-      "defaultValue": "F1"
+      "metadata": {
+        "description": "The name of the application."
+      }
     },
-    "webAppName": {
-      "type": "string"
+    "environment": {
+      "type": "string",
+      "metadata": {
+        "description": "The environment of the application."
+      }
+    },
+    "appServicePlanName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the App Service Plan."
+      }
     }
   },
+  "variables": {},
   "resources": [
     {
       "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2016-09-01",
+      "apiVersion": "2018-02-01",
       "name": "[parameters('appServicePlanName')]",
       "location": "[resourceGroup().location]",
       "sku": {
-        "name": "[parameters('appServicePlanSku')]",
+        "name": "F1",
         "capacity": 1
-      }
+      },
+      "kind": "app"
     },
     {
       "type": "Microsoft.Web/sites",
-      "apiVersion": "2016-08-01",
-      "name": "[parameters('webAppName')]",
+      "apiVersion": "2018-11-01",
+      "name": "[parameters('appName')]",
       "location": "[resourceGroup().location]",
+      "kind": "app",
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
       ],
@@ -44,5 +55,11 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "appServiceUrl": {
+      "type": "string",
+      "value": "[concat('https://', parameters('appName'), '.azurewebsites.net')]"
+    }
+  }
 }
