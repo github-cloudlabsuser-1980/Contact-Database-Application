@@ -1,15 +1,15 @@
-﻿{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "appServicePlanName": {
-      "value": "your-app-service-plan-name"
-    },
-    "appServicePlanSku": {
-      "value": "F1"
-    },
-    "webAppName": {
-      "value": "your-web-app-name"
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appName": {
+            "value": "ContactDatabase"
+        },
+        "environment": {
+            "value": "prod"
+        },
+        "appServicePlanName": {
+            "value": "ContactDatabase"
+        }
     }
-  }
 }
