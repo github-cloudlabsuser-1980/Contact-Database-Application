@@ -3,13 +3,13 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "serverName": {
-      "value": "CDA"
+      "value": "Contact Database application"
     },
     "databaseName": {
       "value": "CDA-Database"
     },
     "appServiceName": {
-      "value": "CDA-App"
+      "value": "Contact Database application"
     },
     "administratorLogin": {
       "value": "odl_user_1368018@azurehol1315.onmicrosoft.com"
