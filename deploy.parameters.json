@@ -1,0 +1,21 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serverName": {
+      "value": "CDA"
+    },
+    "databaseName": {
+      "value": "CDA-Database"
+    },
+    "appServiceName": {
+      "value": "CDA-App"
+    },
+    "administratorLogin": {
+      "value": "odl_user_1368018@azurehol1315.onmicrosoft.com"
+    },
+    "administratorLoginPassword": {
+      "value": "ypgg28TFQ*K7"
+    }
+  }
+}
