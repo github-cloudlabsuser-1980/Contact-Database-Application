@@ -1,7 +1,7 @@
 using CRUD_application_2.Models;
 using System.Linq;
 using System.Web.Mvc;
- 
+
 namespace CRUD_application_2.Controllers
 {
     public class UserController : Controller
@@ -34,12 +34,16 @@ namespace CRUD_application_2.Controllers
         [HttpPost]
         public ActionResult Create(User user)
         {
-            if (ModelState.IsValid)
+            try
             {
+                // Add user to the list
                 userlist.Add(user);
                 return RedirectToAction("Index");
             }
-            return View(user);
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: User/Edit/5
@@ -57,19 +61,22 @@ namespace CRUD_application_2.Controllers
         [HttpPost]
         public ActionResult Edit(int id, User user)
         {
-            var existingUser = userlist.FirstOrDefault(u => u.Id == id);
-            if (existingUser == null)
+            try
             {
-                return HttpNotFound();
-            }
-            if (ModelState.IsValid)
-            {
-                existingUser.Name = user.Name;
-                existingUser.Email = user.Email;
-                // Update other properties as needed
+                var userToUpdate = userlist.FirstOrDefault(u => u.Id == id);
+                if (userToUpdate != null)
+                {
+                    // Update properties
+                    userToUpdate.Name = user.Name;
+                    userToUpdate.Email = user.Email;
+                    // Add more properties as needed
+                }
                 return RedirectToAction("Index");
             }
-            return View(user);
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: User/Delete/5

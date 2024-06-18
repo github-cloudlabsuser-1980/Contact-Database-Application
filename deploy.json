@@ -2,22 +2,30 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "appName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the application."
-      }
-    },
-    "environment": {
-      "type": "string",
-      "metadata": {
-        "description": "The environment of the application."
-      }
-    },
     "appServicePlanName": {
       "type": "string",
       "metadata": {
         "description": "The name of the App Service Plan."
+      }
+    },
+    "appServiceName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Web App."
+      }
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "F1",
+      "metadata": {
+        "description": "The pricing tier of the App Service Plan."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources."
       }
     }
   },
@@ -25,41 +33,29 @@
   "resources": [
     {
       "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2018-02-01",
+      "apiVersion": "2020-06-01",
       "name": "[parameters('appServicePlanName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "sku": {
-        "name": "F1",
-        "capacity": 1
+        "name": "[parameters('sku')]"
       },
-      "kind": "app"
+      "properties": {
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0
+      }
     },
     {
       "type": "Microsoft.Web/sites",
-      "apiVersion": "2018-11-01",
-      "name": "[parameters('appName')]",
-      "location": "[resourceGroup().location]",
-      "kind": "app",
+      "apiVersion": "2020-06-01",
+      "name": "[parameters('appServiceName')]",
+      "location": "[parameters('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
       ],
       "properties": {
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
-        "siteConfig": {
-          "appSettings": [
-            {
-              "name": "WEBSITE_RUN_FROM_PACKAGE",
-              "value": "1"
-            }
-          ]
-        }
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
       }
     }
   ],
-  "outputs": {
-    "appServiceUrl": {
-      "type": "string",
-      "value": "[concat('https://', parameters('appName'), '.azurewebsites.net')]"
-    }
-  }
+  "outputs": {}
 }
